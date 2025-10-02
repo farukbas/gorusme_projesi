@@ -1,0 +1,23 @@
+# BulutSantral A.Ş. Ürün Bilgileri
+
+## Girişimci Paketi
+- Fiyat: Aylık 250 TL
+- Özellikler: 5 adet dahili hat, sesli karşılama anonsu (IVR), mobil uygulama üzerinden kullanım.
+- Hedef Kitle: Küçük işletmeler ve startup'lar.
+- Kurulum: Ücretsiz, 1 iş günü içinde aktif.
+
+## KOBİ Paketi
+- Fiyat: Aylık 700 TL
+- Özellikler: 20 adet dahili hat, gelişmiş IVR senaryoları, sesli mesajları e-postaya gönderme, detaylı arama raporlaması.
+- Hedef Kitle: Orta ölçekli işletmeler.
+- Ekstra: CRM entegrasyonu seçeneği mevcuttur.
+
+## Enterprise Paketi
+- Fiyat: Teklife göre belirlenir.
+- Özellikler: Sınırsız dahili hat, özel API erişimi, ses tanıma ve yapay zeka destekli analiz, kişiye özel müşteri temsilcisi.
+- Hedef Kitle: Büyük ölçekli şirketler ve çağrı merkezleri.
+
+## Teknik Destek Bilgileri
+- Teknik destek ekibimiz 7/24 hizmet vermektedir.
+- Destek talepleri için destek@bulutsantralas.com adresine e-posta gönderilebilir.
+- Acil durumlar için telefon numarası: 0850 123 45 67.
