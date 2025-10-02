@@ -17,8 +17,8 @@ except Exception as e:
     ERROR_MESSAGE = str(e)
 
 # 2. LLM olarak Sadece Gemini Modelini Tanımla
-llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.2, convert_system_message_to_human=True)
-
+# YENİ HALİ:
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash-latest", temperature=0.2, convert_system_message_to_human=True)
 # 3. Prompt Mühendisliği: Prompt'u bilgiyi ve soruyu alacak şekilde güncelle
 prompt_template = """Sen BulutSantral A.Ş. için çalışan bir müşteri temsilcisisin. Sadece ve sadece aşağıda verilen 'Bilgi Kaynağı' metnini kullanarak kullanıcının sorusunu cevapla. Cevapların kısa, net ve samimi olsun. Eğer cevap metinde yoksa, 'Bu konuda bilgim bulunmuyor, size yardımcı olması için destek ekibimize ulaşabilirsiniz.' de. Kesinlikle bilgi uydurma.
 
