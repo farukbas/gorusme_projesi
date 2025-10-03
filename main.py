@@ -2,12 +2,20 @@ import os
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
+from typing import List
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import PromptTemplate
 
-# --- Yeni ve Daha Basit Mantık ---
+# --- YENİ: Gelen Konuşma Geçmişi için Modeller ---
+class Turn(BaseModel):
+    role: str
+    content: str
 
-# 1. Bilgi Kaynağını Uygulama Başlarken Sadece Bir Kez Oku
+class Query(BaseModel):
+    # Artık tek bir 'question' yerine 'history' listesi alıyoruz
+    history: List[Turn]
+
+# --- Bilgi Kaynağını Oku ---
 try:
     with open("bilgi_kaynagi.txt", "r", encoding="utf-8") as f:
         KNOWLEDGE_BASE = f.read()
@@ -16,36 +24,39 @@ except Exception as e:
     SETUP_SUCCESS = False
     ERROR_MESSAGE = str(e)
 
-# 2. LLM olarak Sadece Gemini Modelini Tanımla
-# YENİ HALİ:
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.2, convert_system_message_to_human=True)
-# 3. Prompt Mühendisliği: Prompt'u bilgiyi ve soruyu alacak şekilde güncelle
-prompt_template = """Sen BulutSantral A.Ş. için çalışan, nazik ve yardımsever bir yapay zeka asistanısın. Görevin, kullanıcının yazdığı metnin türüne göre iki farklı şekilde cevap vermektir:
+# --- LLM'i ve Prompt Şablonunu Ayarla ---
+# Not: Model adını "gemini-1.5-flash-latest" olarak değiştirdim, çünkü bu en güncel ve stabil versiyondur.
+# "gemini-2.5-flash" bazen hata verebiliyor.
+llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash-latest", temperature=0.2, convert_system_message_to_human=True)
 
-1.  **EĞER KULLANICI BİR SORU SORARSA:** Cevabı SADECE ve SADECE aşağıda verilen 'Bilgi Kaynağı' metnini kullanarak bul ve cevapla. Eğer soruya cevap metinde yoksa, 'Bu konuda güncel bir bilgim bulunmuyor, dilerseniz sizi satış veya destek ekibimize yönlendirebilirim.' de. Asla bilgi uydurma.
+# YENİ: Prompt şablonu artık 'chat_history' değişkenini de içeriyor
+prompt_template = """Sen BulutSantral A.Ş. için çalışan, nazik ve yardımsever bir yapay zeka asistanısın. Görevin, sana verilen Bilgi Kaynağı'nı ve önceki Konuşma Geçmişi'ni dikkate alarak kullanıcının SON mesajına cevap vermektir.
 
-2.  **EĞER KULLANICI BİR SORU SORMAZSA:** Kullanıcının yazdığı metin bir soru değil de, 'tamamdır', 'teşekkür ederim', 'çok iyi', 'harika', 'anladım' gibi bir onay, teşekkür veya olumlu bir geri bildirim ise, Bilgi Bankası'nı KESİNLİKLE KULLANMA. Bu durumda, kullanıcıya sıcak ve doğal bir tepki ver. Örneğin: 'Yardımcı olabildiğime sevindim!', 'Rica ederim, başka bir sorunuz var mıydı?', 'Harika! Size başka nasıl yardımcı olabilirim?' veya 'Ne demek, memnuniyetle!' gibi kısa ve nazik bir cevap ver.
+-   EĞER KULLANICI BİR SORU SORARSA: Cevabı SADECE Bilgi Kaynağı'ndan bul. Cevap orada yoksa "Bu konuda bilgim bulunmuyor" de.
+-   EĞER KULLANICI TEŞEKKÜR EDER VEYA ONAYLARSA: ("tamam", "güzel", "teşekkürler" gibi), ona göre nazik bir cevap ver.
+-   Cevaplarında önceki konuşmayı dikkate al. Örneğin, kullanıcı bir paket sorduktan sonra "fiyatı ne kadar?" derse, o paketin fiyatını söylemelisin.
 
 ---
-Bilgi Kaynağı:
+BİLGİ KAYNAĞI:
 {knowledge_base}
 ---
 
-Kullanıcının Sorusu: {question}
+---
+KONUŞMA GEÇMİŞİ:
+{chat_history}
+---
 
-Cevap:
+Kullanıcının SON MESAJI: {question}
+
+Asistanın Cevabı:
 """
 
-# Prompt şablonunu oluştur
 prompt = PromptTemplate(
-    template=prompt_template, input_variables=["knowledge_base", "question"]
+    template=prompt_template, input_variables=["knowledge_base", "chat_history", "question"]
 )
 
 # --- FastAPI Uygulaması ---
 app = FastAPI()
-
-class Query(BaseModel):
-    question: str
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root():
@@ -58,10 +69,21 @@ async def ask_question(query: Query):
         return {"answer": f"Uygulama başlatılırken bir hata oluştu: {ERROR_MESSAGE}."}
     
     try:
-        # 4. Final Prompt'u oluştur ve LLM'i doğrudan çağır
-        final_prompt = prompt.format(knowledge_base=KNOWLEDGE_BASE, question=query.question)
+        # Konuşma geçmişini okunabilir bir metne çeviriyoruz
+        formatted_history = ""
+        for turn in query.history[:-1]: # Son kullanıcı mesajı hariç
+            role = "Asistan" if turn.role == 'model' else "Kullanıcı"
+            formatted_history += f"{role}: {turn.content}\n"
+
+        last_user_message = query.history[-1].content
+
+        # Final Prompt'u oluştur ve LLM'i çağır
+        final_prompt = prompt.format(
+            knowledge_base=KNOWLEDGE_BASE, 
+            chat_history=formatted_history, 
+            question=last_user_message
+        )
         
-        # Karmaşık chain'ler yerine doğrudan invoke kullanıyoruz
         result = llm.invoke(final_prompt)
         
         return {"answer": result.content}

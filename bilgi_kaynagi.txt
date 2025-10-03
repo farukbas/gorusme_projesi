@@ -1,23 +1,63 @@
-# BulutSantral A.Ş. Ürün Bilgileri
+# BulutSantral A.Ş. Bilgi Bankası
 
-## Girişimci Paketi
-- Fiyat: Aylık 250 TL
-- Özellikler: 5 adet dahili hat, sesli karşılama anonsu (IVR), mobil uygulama üzerinden kullanım.
-- Hedef Kitle: Küçük işletmeler ve startup'lar.
-- Kurulum: Ücretsiz, 1 iş günü içinde aktif.
+## Paket Detayları ve Fiyatlandırma
 
-## KOBİ Paketi
-- Fiyat: Aylık 700 TL
-- Özellikler: 20 adet dahili hat, gelişmiş IVR senaryoları, sesli mesajları e-postaya gönderme, detaylı arama raporlaması.
-- Hedef Kitle: Orta ölçekli işletmeler.
-- Ekstra: CRM entegrasyonu seçeneği mevcuttur.
+### Girişimci Paketi
+- Fiyat: Aylık 250 TL + KDV
+- Özellikler: 5 adet dahili hat, standart sesli karşılama anonsu (IVR), mobil uygulama (iOS/Android), temel arama raporlaması.
+- Kimler İçin: Küçük işletmeler, startup'lar, serbest çalışanlar.
+- Kurulum: Ücretsiz. Sözleşme sonrası 1 iş günü içinde aktivasyon.
 
-## Enterprise Paketi
-- Fiyat: Teklife göre belirlenir.
-- Özellikler: Sınırsız dahili hat, özel API erişimi, ses tanıma ve yapay zeka destekli analiz, kişiye özel müşteri temsilcisi.
-- Hedef Kitle: Büyük ölçekli şirketler ve çağrı merkezleri.
+### KOBİ Paketi
+- Fiyat: Aylık 700 TL + KDV
+- Özellikler: 20 adet dahili hat, gelişmiş IVR senaryoları (mesai saatleri dışı farklı anons), sesli mesajları e-postaya gönderme, detaylı arama raporlaması, ses kaydı (30 gün saklama), Temel CRM entegrasyonu (Zoho, Hubspot).
+- Kimler İçin: Büyüyen işletmeler, birden fazla departmanı olan firmalar.
 
-## Teknik Destek Bilgileri
-- Teknik destek ekibimiz 7/24 hizmet vermektedir.
-- Destek talepleri için destek@bulutsantralas.com adresine e-posta gönderilebilir.
-- Acil durumlar için telefon numarası: 0850 123 45 67.
+### Enterprise Paketi
+- Fiyat: Özel teklif alınır.
+- Özellikler: Sınırsız dahili hat, Gelişmiş API Erişimi, Yapay Zeka Destekli Çağrı Analizi (Duygu analizi, konuşma metinleri), kişiye özel IVR tasarımı, KVKK uyumlu ses kaydı (1 yıl saklama), Gelişmiş CRM entegrasyonu (Salesforce, Microsoft Dynamics).
+- Kimler İçin: Çağrı merkezleri, büyük kurumsal firmalar.
+
+### Ek Ücretler ve Koşullar
+- Taahhüt: Tüm paketler 12 ay taahhütlüdür.
+- Ek Dahili Hat: 40 TL/ay/kullanıcı.
+- Numara Tahsisi: 0850'li veya coğrafi (0212, 0312 vb.) numara tahsisi ücretsizdir.
+- Yurt Dışı Aramaları: Standart tarifeye ek olarak ülkeye göre ücretlendirilir. Müşteri temsilcisiyle görüşülerek aktive edilir.
+
+---
+
+## Sıkça Sorulan Sorular (SSS) ve Teknik Destek
+
+### Soru: Dahili hatlarımda ses kesintisi veya cızırtı yaşıyorum, ne yapmalıyım?
+**Cevap:** Bu durum genellikle internet bağlantınızla ilgilidir. Lütfen aşağıdaki adımları sırayla deneyin:
+1. İnternet bağlantınızın stabil olduğundan emin olun.
+2. Modem ve router cihazlarınızı kapatıp 30 saniye bekledikten sonra tekrar açın.
+3. Sorun devam ederse, destek ekibimize sorunun yaşandığı zaman aralığını ve arama yapılan numarayı bildirerek e-posta gönderin.
+
+### Soru: Sesli karşılama anonsumu (IVR) nasıl değiştirebilirim?
+**Cevap:** Sesli karşılama anonsunuzu müşteri paneliniz üzerinden kolayca güncelleyebilirsiniz. "Santral Yönetimi" -> "IVR Senaryoları" menüsünden mevcut anonsunuzu dinleyebilir ve yeni bir ses dosyası yükleyebilirsiniz. Desteklenen formatlar MP3 ve WAV'dır.
+
+### Soru: CRM entegrasyonu tam olarak ne işe yarıyor?
+**Cevap:** Müşteri aradığında, KOBİ ve Enterprise paketlerindeki CRM entegrasyonu sayesinde arayanın kim olduğunu ve müşteri bilgilerini (isim, şirket, son sipariş vb.) direkt olarak ekranınızda görebilirsiniz. Bu, müşterilerinize daha kişisel bir hizmet sunmanızı sağlar.
+
+### Soru: Şirketim taşındı, santralimi nasıl taşıyabilirim?
+**Cevap:** Bulut santralin en büyük avantajı budur! Santraliniz fiziksel bir cihaz olmadığı için taşımanıza gerek yoktur. İnternet bağlantısı olan her yerden santralinizi kullanmaya devam edebilirsiniz.
+
+---
+
+## Satış ve Yeni Müşteri Süreçleri
+
+### Soru: Nasıl müşteri olabilirim?
+**Cevap:** Web sitemizdeki iletişim formunu doldurarak veya satış departmanımızı arayarak süreci başlatabilirsiniz. Ekibimiz ihtiyaçlarınızı analiz edip size en uygun paketi önerecektir.
+
+### Soru: Mevcut telefon numaramı BulutSantral'e taşıyabilir miyim?
+**Cevap:** Evet, mevcut coğrafi (sabit) veya 0850'li numaranızı hiçbir kesinti olmadan sistemimize taşıyabiliriz. Numara taşıma işlemi yasal olarak yaklaşık 3 iş günü sürmektedir.
+
+---
+
+## Şirket ve İletişim Bilgileri
+
+- **Unvan:** BulutSantral A.Ş. İletişim Teknolojileri
+- **Misyonumuz:** KOBİ'lerin ve büyük işletmelerin iletişim altyapılarını modern, esnek ve verimli bulut teknolojileriyle güçlendirmek.
+- **Satış Departmanı:** satis@bulutsantralas.com
+- **Teknik Destek (7/24):** destek@bulutsantralas.com
