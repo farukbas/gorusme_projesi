@@ -1,18 +1,198 @@
-<script>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akıllı Asistan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --body-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --container-bg: rgba(255, 255, 255, 0.85);
+            --user-bubble-bg: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            --bot-bubble-bg: #E9E9EB;
+            --text-dark: #2c3e50;
+            --text-light: #ffffff;
+            --input-bg: #f1f1f1;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: var(--body-bg);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            height: 85vh;
+            max-height: 800px;
+            display: flex;
+            flex-direction: column;
+            background: var(--container-bg);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .chatbox {
+            flex-grow: 1;
+            padding: 20px 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            max-width: 80%;
+            line-height: 1.5;
+            padding: 10px 16px;
+            border-radius: 20px;
+            word-wrap: break-word;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background: var(--user-bubble-bg);
+            color: var(--text-light);
+            border-radius: 20px 5px 20px 20px;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background: var(--bot-bubble-bg);
+            color: var(--text-dark);
+            border-radius: 5px 20px 20px 20px;
+        }
+
+        .input-area {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-top: 1px solid #e0e0e0;
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        #userInput {
+            flex-grow: 1;
+            padding: 12px 20px;
+            border: none;
+            background: var(--input-bg);
+            border-radius: 22px;
+            font-size: 16px;
+            outline: none;
+            margin-right: 10px;
+        }
+        #userInput:focus {
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        #sendButton {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            flex-shrink: 0;
+        }
+        #sendButton:hover {
+            transform: scale(1.1);
+            background-color: #0056b3;
+        }
+        #sendButton svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background-color: #aaa;
+            border-radius: 50%;
+            animation: bounce 1.3s infinite ease-in-out;
+        }
+
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Akıllı Asistan 🤖</div>
+        <div class="chatbox" id="chatbox">
+             </div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Mesajınızı yazın..." onkeydown="handleEnter(event)">
+            <button id="sendButton" onclick="sendMessage()">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="transform: rotate(90deg);">
+                    <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
         const chatbox = document.getElementById('chatbox');
         const userInput = document.getElementById('userInput');
         
-        // 1. HAFIZAYI OLUŞTURUYORUZ: Konuşma geçmişini tutacak olan dizi (array)
         let conversationHistory = [];
 
-        // Sayfa yüklendiğinde ilk bot mesajını hem ekrana yaz hem de hafızaya al
         document.addEventListener("DOMContentLoaded", function() {
             const initialBotMessage = "Merhaba! Ben BulutSantral A.Ş. dijital asistanı. Ürünlerimiz hakkında size nasıl yardımcı olabilirim?";
-            appendMessage(initialBotMessage, 'bot-message');
-            // Hafızaya ekle: {rol: 'model', içerik: '...'}
+            appendMessage(initialBotMessage, 'bot-message', false); // Düzeltme: Animasyonlu yükleyici kullanma
             conversationHistory.push({ role: 'model', content: initialBotMessage });
         });
-
 
         function handleEnter(event) {
             if (event.key === "Enter") {
@@ -24,46 +204,56 @@
             const question = userInput.value;
             if (!question.trim()) return;
 
-            appendMessage(question, 'user-message');
-            // Kullanıcının mesajını da hafızaya ekle
+            appendMessage(question, 'user-message', false);
             conversationHistory.push({ role: 'user', content: question });
             
             userInput.value = '';
-            appendMessage('...', 'loading');
+            appendMessage(null, 'bot-message', true); // Yükleme animasyonunu göster
 
-            // Çok uzamaması için hafızanın son 10 mesajı tutmasını sağlayalım
             const CONVERSATION_LIMIT = 10;
             if (conversationHistory.length > CONVERSATION_LIMIT) {
                 conversationHistory = conversationHistory.slice(conversationHistory.length - CONVERSATION_LIMIT);
             }
 
             try {
-                // 2. DEĞİŞİKLİK: Sunucuya artık tek bir soru değil, TÜM KONUŞMA GEÇMİŞİNİ gönderiyoruz
                 const response = await fetch('/ask', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ history: conversationHistory }) // 'question' yerine 'history'
+                    body: JSON.stringify({ history: conversationHistory })
                 });
 
-                document.querySelector('.loading')?.remove();
+                document.getElementById('loading-indicator')?.parentElement.remove(); // Yükleyiciyi kaldır
                 if (!response.ok) { throw new Error('Sunucu hatası.'); }
                 const data = await response.json();
                 
-                appendMessage(data.answer, 'bot-message');
-                // Gelen cevabı da hafızaya ekle
+                appendMessage(data.answer, 'bot-message', false);
                 conversationHistory.push({ role: 'model', content: data.answer });
 
             } catch (error) {
-                document.querySelector('.loading')?.remove();
-                appendMessage('Üzgünüm, bir hata oluştu. Lütfen tekrar deneyin.', 'bot-message');
+                document.getElementById('loading-indicator')?.parentElement.remove();
+                appendMessage('Üzgünüm, bir hata oluştu. Lütfen tekrar deneyin.', 'bot-message', false);
             }
         }
 
-        function appendMessage(text, className) {
+        function appendMessage(text, className, isLoading) {
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message ' + className;
-            messageDiv.textContent = text;
+
+            if (isLoading) {
+                messageDiv.innerHTML = `
+                    <div class="typing-indicator" id="loading-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                `;
+            } else {
+                messageDiv.textContent = text;
+            }
+            
             chatbox.appendChild(messageDiv);
             chatbox.scrollTop = chatbox.scrollHeight;
         }
     </script>
+</body>
+</html>
