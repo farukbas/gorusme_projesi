@@ -27,7 +27,7 @@ except Exception as e:
 # --- LLM'i ve Prompt Şablonunu Ayarla ---
 # Not: Model adını "gemini-1.5-flash-latest" olarak değiştirdim, çünkü bu en güncel ve stabil versiyondur.
 # "gemini-2.5-flash" bazen hata verebiliyor.
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash-latest", temperature=0.2, convert_system_message_to_human=True)
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.2, convert_system_message_to_human=True)
 
 # YENİ: Prompt şablonu artık 'chat_history' değişkenini de içeriyor
 prompt_template = """Sen BulutSantral A.Ş. için çalışan, nazik ve yardımsever bir yapay zeka asistanısın. Görevin, sana verilen Bilgi Kaynağı'nı ve önceki Konuşma Geçmişi'ni dikkate alarak kullanıcının SON mesajına cevap vermektir.
